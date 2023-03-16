@@ -9,6 +9,7 @@ import GallerySkeleton from "./GallerySkeleton/GallerySkeleton";
 import ScrollUp from "./ScrollUp";
 import { Toaster } from 'react-hot-toast';
 import getImages from "services/api";
+import { nanoid } from "nanoid";
 
 function App (){
   const [images, setImages] = useState([]);
@@ -18,6 +19,7 @@ function App (){
   const [isLoading, setIsLoading] = useState(false);
   const [largeImg, setLargeImg] = useState('');
   const [loadMore, setLoadMore] = useState(true);
+  const [reqId, setReqId] = useState(null);
 
   useEffect(()=>{
 
@@ -49,7 +51,7 @@ function App (){
 
   fetchImg();
 
-  }, [page, value])
+  }, [page, value, reqId])
 
     const handleGalleryItem = largeImgUrl => {
       setLargeImg(largeImgUrl);
@@ -65,12 +67,13 @@ function App (){
       setIsOpenModal(false)
   };
 
-    const onChangeQuery = value => {
+    const onChangeQuery = newValue => {
+      setReqId(nanoid())
       setImages([]);
       setPage(1);
-      setValue(value);
+      setValue(newValue);
       setLoadMore(true);
-  };
+    };
 
    const scrollOnLoadButton = () => {
         window.scrollBy({
